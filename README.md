@@ -2,7 +2,11 @@
 
 The Transformer implemented in this repo is a Decoder only transformer which uses masked attention. Meaning the tokens in the training phase do not see the tokens in the future by implementing a masked attention block.
 
-## Tokenizer
+Apart from the Transformer implementation, the repo also includes other modules which will be a requirement for building a base language model end to end.
+
+`Inspired from @karpathy nanogpt implementation`
+
+## Module: Tokenizer
 
 A Tokenizer class capable of taking a parent dataset and tokenize a stream of characters or a string. It can also convert back the tokenized indices to the original string or stream of characters.
 
