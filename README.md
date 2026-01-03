@@ -4,7 +4,7 @@ The Transformer implemented in this repo is a Decoder only transformer which use
 
 Apart from the Transformer implementation, the repo also includes other modules which will be a requirement for building a base language model end to end.
 
-Inspired from [@karpathy](https://github.com/karpathy) nanogpt implementation :raised_hands:
+Inspired from [@karpathy](https://github.com/karpathy)'s nanogpt implementation :raised_hands:
 
 ## Module: Tokenizer
 
@@ -45,4 +45,41 @@ print(tokenizer.decode(encoded_value, True))
 >   [20, 43, 63, 1, 20, 53, 61, 1, 39, 56, 43, 1, 37, 53, 59]
 >   ['H', 'e', 'y', ' ', 'H', 'o', 'w', ' ', 'a', 'r', 'e', ' ', 'Y', 'o', 'u']
 >   Hey How are You
+```
+
+## Module: Trainer
+
+Trainer module can be used to get the train-test split for a provided split value. A split value of `0.9` means `90%` of the data is for training and the rest `10%` for validation.
+
+
+### Codeblock
+
+```
+trainer = Trainer(
+    batch_size=3, block_size=8, train_test_split=0.9, data=tokenizer.encode(dataset)
+)
+
+xb, yb = trainer.get_batch_of_train_or_test_split(split='Train')
+print(f'Input: {xb}')
+print(f'Target: {yb}')
+
+print('Decoded the batch')
+
+print(f'Input : {[tokenizer.decode(x, stringify=True) for x in xb.numpy()]}')
+print(f'Target: {[tokenizer.decode(y, stringify=True) for y in yb.numpy()]}')
+```
+
+
+### Output
+
+```
+>   Input: tensor([[46, 43, 43, 49,  6,  0, 16, 39],
+            [61,  1, 47, 57,  1, 57, 46, 39],
+            [53, 42,  1, 51, 39, 57, 58, 43]])
+>   Target: tensor([[43, 43, 49,  6,  0, 16, 39, 57],
+            [ 1, 47, 57,  1, 57, 46, 39, 56],
+            [42,  1, 51, 39, 57, 58, 43, 56]])
+>   Decoded the batch
+>   Input : ['heek,\nDa', 'w is sha', 'od maste']
+>   Target: ['eek,\nDas', ' is shar', 'd master']
 ```
