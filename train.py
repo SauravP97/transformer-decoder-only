@@ -88,6 +88,7 @@ class Trainer:
 
     def execute_training_loop(self, track_loss=True) -> float:
         """Execute training loop and return final Loss"""
+        print(f"Training on Device: {self.device}")
         print("Executing Training Loop")
         losses_per_eval_interval = []
         for iter in range(self.max_iterations):
