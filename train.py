@@ -2,19 +2,51 @@
 
 import torch
 
+from transformer_model import Transformer
+
 
 class Trainer:
     """Trainer module."""
 
     def __init__(
-        self, batch_size: int, block_size: int, train_test_split: float, data: list[int]
+        self,
+        batch_size: int,
+        block_size: int,
+        train_test_split: float,
+        data: list[int],
+        embedding_dimension: int,
+        vocab_size: int,
+        n_head: int,
+        n_layer: int,
+        max_iterations: int,
+        learning_rate: float,
+        eval_interval: int,
     ):
         self.batch_size = batch_size
         self.block_size = block_size
+        self.vocab_size = vocab_size
+        self.embedding_dimension = embedding_dimension
+        self.n_head = n_head  # Number of Transformer Heads
+        self.n_layer = n_layer  # Number of Transformer Blocks (layered sequentially)
         transformed_data = torch.tensor(data, dtype=torch.long)
         self.threshold = int(train_test_split * len(transformed_data))
         self.train_set = transformed_data[: self.threshold]
         self.validation_set = transformed_data[self.threshold :]
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.transformer_model = Transformer(
+            self.vocab_size,
+            self.embedding_dimension,
+            self.block_size,
+            self.n_head,
+            self.n_layer,
+            self.device,
+        )
+        self.max_iterations = max_iterations
+        self.learning_rate = learning_rate
+        self.optimizer = torch.optim.AdamW(
+            self.transformer_model.parameters(), lr=self.learning_rate
+        )
+        self.eval_interval = eval_interval
 
     def get_train_data(self):
         """Get the Training split."""
@@ -43,3 +75,31 @@ class Trainer:
         y = torch.stack([data[i + 1 : i + self.block_size + 1] for i in ix])
 
         return x, y
+
+    def execute_training_loop(self, track_loss=True) -> float:
+        """Execute training loop and return final Loss"""
+        print("Executing Training Loop")
+        losses_per_eval_interval = []
+        for iter in range(self.max_iterations):
+            if iter % self.eval_interval == 0 or iter == (self.max_iterations - 1):
+                if losses_per_eval_interval and track_loss:
+                    average_loss_per_eval_interval = sum(
+                        losses_per_eval_interval
+                    ) / len(losses_per_eval_interval)
+                    print(f"Iteration: {iter} | Loss: {average_loss_per_eval_interval}")
+                losses_per_eval_interval = []
+
+            Xb, Yb = self.get_batch_of_train_or_test_split("train")
+
+            logits, loss = self.transformer_model(Xb, Yb)
+            self.optimizer.zero_grad(set_to_none=True)
+            losses_per_eval_interval.append(loss.item())
+            loss.backward()
+            self.optimizer.step()
+
+        return loss.item()
+
+    def generate(self) -> list:
+        """Generate text from the trained model"""
+        context = torch.zeros((1, 1), dtype=torch.long, device=self.device)
+        return self.transformer_model.generate(context, max_new_tokens=2000)[0].tolist()

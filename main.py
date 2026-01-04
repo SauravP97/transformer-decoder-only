@@ -4,22 +4,25 @@ from train import Trainer
 tokenizer = Tokenizer(dataset_path="./dataset/shakespear-text.txt")
 dataset = tokenizer.get_dataset()
 
-# print(dataset[:200])
-
-# encoded_value = tokenizer.encode("Hey How are You")
-# print(encoded_value)
-# print(tokenizer.decode(encoded_value))
-# print(tokenizer.decode(encoded_value, True))
-
 trainer = Trainer(
-    batch_size=3, block_size=8, train_test_split=0.9, data=tokenizer.encode(dataset)
+    batch_size=16,
+    block_size=32,
+    train_test_split=0.9,
+    data=tokenizer.encode(dataset),
+    embedding_dimension=64,
+    vocab_size=tokenizer.vocab_size,
+    n_head=4,
+    n_layer=4,
+    max_iterations=5000,
+    learning_rate=1e-3,
+    eval_interval=500,
 )
 
-xb, yb = trainer.get_batch_of_train_or_test_split(split="Train")
-print(f"Input: {xb}")
-print(f"Target: {yb}")
+loss = trainer.execute_training_loop()
+print(f"Final Loss after training: {loss}")
 
-print("Decoded the batch")
+predicted_tokens = trainer.generate()
+predicted_text = tokenizer.decode(predicted_tokens, stringify=True)
 
-print(f"Input : {[tokenizer.decode(x, stringify=True) for x in xb.numpy()]}")
-print(f"Target: {[tokenizer.decode(y, stringify=True) for y in yb.numpy()]}")
+print("\nPredictions:")
+print(predicted_text)

@@ -10,16 +10,18 @@ from attention_block import Block
 class Transformer(nn.Module):
     """Transformer module"""
 
-    def __init__(self, vocab_size, embedding_dimension, block_size, n_head, n_layer):
+    def __init__(
+        self, vocab_size, embedding_dimension, block_size, n_head, n_layer, device
+    ):
         super().__init__()
         self.token_embedding_table = nn.Embedding(vocab_size, embedding_dimension)
         self.positional_embedding_table = nn.Embedding(block_size, embedding_dimension)
         self.blocks = nn.Sequential(
-            *[Block(embedding_dimension, n_head) for _ in range(n_layer)]
+            *[Block(embedding_dimension, n_head, block_size) for _ in range(n_layer)]
         )
         self.layer_norm = nn.LayerNorm(embedding_dimension)
         self.linear = nn.Linear(embedding_dimension, vocab_size)
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.device = device
         self.block_size = block_size
 
     def forward(self, idx, targets=None):
