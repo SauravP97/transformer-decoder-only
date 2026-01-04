@@ -1,5 +1,9 @@
+import time
+
 from tokenizer import Tokenizer
 from train import Trainer
+
+start_time = time.perf_counter()
 
 tokenizer = Tokenizer(dataset_path="./dataset/shakespear-text.txt")
 dataset = tokenizer.get_dataset()
@@ -13,16 +17,21 @@ trainer = Trainer(
     vocab_size=tokenizer.vocab_size,
     n_head=4,
     n_layer=4,
-    max_iterations=5000,
+    max_iterations=1000,
     learning_rate=1e-3,
     eval_interval=500,
 )
 
-loss = trainer.execute_training_loop()
-print(f"Final Loss after training: {loss}")
+training_loss, validation_loss = trainer.execute_training_loop()
+print(f"\nFinal Training Loss: {training_loss}")
+print(f"Final Validation Loss: {validation_loss}")
 
 predicted_tokens = trainer.generate()
 predicted_text = tokenizer.decode(predicted_tokens, stringify=True)
 
 print("\nPredictions:")
 print(predicted_text)
+
+end_time = time.perf_counter()
+elapsed_time = end_time - start_time
+print(f"\nExecution time: {elapsed_time:.4f} seconds")

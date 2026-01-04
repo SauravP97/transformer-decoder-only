@@ -56,7 +56,7 @@ class Trainer:
         """Get the Validation split."""
         return self.validation_set
 
-    def get_batch_of_train_or_test_split(self, split):
+    def _get_batch_of_train_or_test_split(self, split):
         """
         Return batch of Train or Validation split.
         The batch holds the input and the target list of a block size.
@@ -76,6 +76,16 @@ class Trainer:
 
         return x, y
 
+    def _get_current_validation_loss(self) -> float:
+        """Get the validation loss as per the current state of the trained model."""
+        Xb_valid, Yb_valid = self._get_batch_of_train_or_test_split("valid")
+        Xb_valid.to(self.device)
+        Yb_valid.to(self.device)
+
+        logits, loss = self.transformer_model(Xb_valid, Yb_valid)
+
+        return loss.item()       
+
     def execute_training_loop(self, track_loss=True) -> float:
         """Execute training loop and return final Loss"""
         print("Executing Training Loop")
@@ -89,7 +99,9 @@ class Trainer:
                     print(f"Iteration: {iter} | Loss: {average_loss_per_eval_interval}")
                 losses_per_eval_interval = []
 
-            Xb, Yb = self.get_batch_of_train_or_test_split("train")
+            Xb, Yb = self._get_batch_of_train_or_test_split("train")
+            Xb.to(self.device)
+            Yb.to(self.device)
 
             logits, loss = self.transformer_model(Xb, Yb)
             self.optimizer.zero_grad(set_to_none=True)
@@ -97,7 +109,9 @@ class Trainer:
             loss.backward()
             self.optimizer.step()
 
-        return loss.item()
+        validation_loss = self._get_current_validation_loss()
+
+        return loss.item(), validation_loss
 
     def generate(self) -> list:
         """Generate text from the trained model"""
