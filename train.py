@@ -84,7 +84,7 @@ class Trainer:
 
         logits, loss = self.transformer_model(Xb_valid, Yb_valid)
 
-        return loss.item()       
+        return loss.item()
 
     def execute_training_loop(self, track_loss=True) -> float:
         """Execute training loop and return final Loss"""
@@ -114,7 +114,9 @@ class Trainer:
 
         return loss.item(), validation_loss
 
-    def generate(self) -> list:
+    def generate(self, tokens_to_generate=2000) -> list:
         """Generate text from the trained model"""
         context = torch.zeros((1, 1), dtype=torch.long, device=self.device)
-        return self.transformer_model.generate(context, max_new_tokens=2000)[0].tolist()
+        return self.transformer_model.generate(
+            context, max_new_tokens=tokens_to_generate
+        )[0].tolist()

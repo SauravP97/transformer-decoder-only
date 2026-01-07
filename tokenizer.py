@@ -29,6 +29,10 @@ class Tokenizer:
         """Return the dataset for building the Tokenizer."""
         return self.dataset
 
+    def get_encoded_dataset(self):
+        """Returns encoded (tokenized) dataset."""
+        return self.encode(self.dataset)
+
     def encode(self, characters: Union[list[str], str]) -> list[int]:
         """Encode a List of characters or String into Tokenized indices."""
         return [self.character_to_index[character] for character in characters]
