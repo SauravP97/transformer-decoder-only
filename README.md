@@ -18,6 +18,7 @@ Apart from the Transformer implementation, the repo also includes other modules 
 
 Inspired from [@karpathy](https://github.com/karpathy)'s nanogpt implementation :raised_hands:
 
+> This repo also supports training the model on a `GPU` (***if you want***). The repo internally implements the logic to move the model parameters and the training dataset to the currently enabled device and runs on it. Meaning if you have a CPU it runs on it, if you have a GPU it seamlessly flies on it!
 
 ## Training and Inference with Transformer model
 
