@@ -1,4 +1,4 @@
-# A decoder only Transformer implementation
+# Toy-Transformer (decoder-only)
 
 A toy [Transformer](https://en.wikipedia.org/wiki/Transformer_(deep_learning)) model implementation from scratch! If you have a block of text on which you want to train a transformer model and let the model generate text afterwards, then you can use this repo to achieve all of it on your local machine without a GPU.
 
