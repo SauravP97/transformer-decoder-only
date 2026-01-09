@@ -87,7 +87,7 @@ If you follow the above steps for Shakespeare text block and run `10,000` traini
 
 ## Tokenizer
 
-<img src="./media/tokenizer-character-level.png" width="500" alt="Alt text description">
+<img src="./media/tokenizer-character-level.png" width="600" alt="Alt text description">
 
 The `Tokenizer` class capable of taking a parent dataset and tokenize a stream of characters or a string. It can also convert back the tokenized indices to the original string or stream of characters.
 
