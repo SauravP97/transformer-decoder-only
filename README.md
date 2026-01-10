@@ -8,7 +8,7 @@ If you want to get straight to the show, clone this repo and run the below comma
 python main.py
 ```
 
-<img src="./media/toy-transformer.png" width="500" alt="Alt text description">
+<img src="./media/toy-transformer.png" width="900" alt="Alt text description">
 
 ## Introduction
 
@@ -33,6 +33,8 @@ Below is the glimpse of Training and Validation loss curve over `10,000` iterati
   - Head Size = (Embedding Dimension // Number of Heads) = 16
 
 #### Visualizing the Model:
+
+<img src="./media/model-tranformer-decoder.png" width="500" alt="Alt text description">
 
 ## Training and Inference with Transformer model
 
