@@ -1,4 +1,4 @@
-# Toy-Transformer (decoder-only)
+# Toy-Transformer (decoder-only) :snowman:
 
 A toy [Transformer](https://en.wikipedia.org/wiki/Transformer_(deep_learning)) model implementation from scratch! If you have a block of text on which you want to train a transformer model and let the model generate text afterwards, then you can use this repo to achieve all of it on your local machine without a GPU.
 
@@ -10,7 +10,7 @@ python main.py
 
 <img src="./media/toy-transformer.png" width="500" alt="Alt text description">
 
-## Introduction
+## :small_orange_diamond: Introduction
 
 The Transformer implemented in this repo is a [Decoder-only](https://cameronrwolfe.substack.com/p/decoder-only-transformers-the-workhorse) transformer which uses masked attention. Meaning the tokens in the training phase do not see the tokens in the future by implementing a masked attention block.
 
