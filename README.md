@@ -24,6 +24,16 @@ Below is the glimpse of Training and Validation loss curve over `10,000` iterati
 
 <img src="./media/loss-epochs.png" width="600" alt="Loss Epochs">
 
+### Model Architecture
+
+#### Details:
+  - Number of Heads (per Attention block) = 4
+  - Embedding Dimension = 64
+  - Number of Attention Blocks (sequential) = 4
+  - Head Size = (Embedding Dimension // Number of Heads) = 16
+
+#### Visualizing the Model:
+
 ## Training and Inference with Transformer model
 
 This repo enables you to train your own block of text data on a decoder-only transformer model and run predictions on your machine. You do not need a GPU to run training iterations and inference (predictions) using this report but can still get a gist of how the transformer model works.
