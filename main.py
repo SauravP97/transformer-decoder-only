@@ -5,7 +5,7 @@ from train import Trainer
 
 start_time = time.perf_counter()
 
-tokenizer = Tokenizer(dataset_path="./dataset/shakespear-text.txt")
+tokenizer = Tokenizer(dataset_path="./dataset/beatles.txt")
 tokenized_dataset = tokenizer.get_encoded_dataset()
 
 trainer = Trainer(
@@ -17,7 +17,7 @@ trainer = Trainer(
     vocab_size=tokenizer.vocab_size,
     n_head=4,
     n_layer=4,
-    max_iterations=10000,
+    max_iterations=5000,
     learning_rate=1e-3,
     eval_interval=500,
 )

@@ -97,7 +97,10 @@ class Trainer:
                     average_loss_per_eval_interval = sum(
                         losses_per_eval_interval
                     ) / len(losses_per_eval_interval)
-                    print(f"Iteration: {iter} | Loss: {average_loss_per_eval_interval}")
+                    cur_validation_loss = self._get_current_validation_loss()
+                    print(
+                        f"Iteration: {iter} | Loss: {average_loss_per_eval_interval} | Validation Loss: {cur_validation_loss}"
+                    )
                 losses_per_eval_interval = []
 
             Xb, Yb = self._get_batch_of_train_or_test_split("train")
